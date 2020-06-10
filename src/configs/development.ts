@@ -1,3 +1,6 @@
+// tslint:disable-next-line: no-var-requires
+require('dotenv').config();
+
 import { URL } from 'url';
 
 const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
