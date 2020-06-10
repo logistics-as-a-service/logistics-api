@@ -19,27 +19,6 @@ class Server {
       log(`Server is running on http://localhost:${serverPort} `);
     });
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  // private async setupDatabase() {
-  //   try {
-  //     await createConnection({
-  //       name: 'default',
-  //       type,
-  //       host,
-  //       port,
-  //       username,
-  //       password,
-  //       database,
-  //       entities: [`${__dirname}/database/models/*.ts`],
-  //       synchronize: true,
-  //     });
-
-  //     log(`${type.toUpperCase()} Database Connected`);
-  //   } catch (error) {
-  //     throw new Error(error.message);
-  //   }
-  // }
 }
 
 export default new Server();
