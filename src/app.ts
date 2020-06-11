@@ -7,6 +7,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import config from 'config';
+import './database/DbConnection';
 
 // import routes from './routes';
 
