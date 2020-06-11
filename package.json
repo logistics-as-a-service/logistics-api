@@ -36,7 +36,6 @@
     "@types/lusca": "^1.6.2",
     "@types/morgan": "^1.9.0",
     "@types/node": "^14.0.13",
-    "@types/sequelize": "^4.28.9",
     "@types/winston": "^2.4.4",
     "nodemon": "^2.0.4",
     "npm-check-updates": "^7.0.1",
@@ -64,9 +63,9 @@
     "moment": "^2.26.0",
     "morgan": "^1.10.0",
     "pg": "^8.2.1",
-    "pg-hstore": "^2.3.3",
     "redis": "^3.0.2",
-    "sequelize": "^5.21.12",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25",
     "uuid": "^8.1.0"
   }
 }
