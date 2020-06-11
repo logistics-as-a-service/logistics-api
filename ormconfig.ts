@@ -1,6 +1,6 @@
 import config from 'config';
 
-const { type, host, port, username, password, database } = config.get('database');
+const { type, host, port, username, password, name } = config.get('database');
 
 const conneection = {
   name: 'default',
@@ -9,7 +9,7 @@ const conneection = {
   port,
   username,
   password,
-  database,
+  database: name,
   entities: [`src/database/entity/*.ts`],
   migrations: [`src/database/migration/*.ts`],
   subscribers: ['src/database/subscriber/*.ts'],

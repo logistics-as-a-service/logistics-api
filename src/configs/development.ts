@@ -22,11 +22,11 @@ export default {
     prefix: 'sam:'
   },
   database: {
-    type: process.env.DB_TYPE,
+    type: process.env.DB_TYPE || 'postgres',
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
-    username: process.env.DB_USERNAME || 'root',
+    port: process.env.DB_PORT,
+    username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || 'logistics-service'
+    name: process.env.DB_NAME
   }
 };
