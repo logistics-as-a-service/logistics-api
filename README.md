@@ -9,7 +9,7 @@ Logistic Base URL : http://localhost:3000
 ### ENV variables
 
 ```
-LOGISTICS_NODE_ENV=development
+NODE_ENV=development
 LOGISTICS_BASE_URL=http://localhost
 LOGISTICS_SERVER_PORT=3080
 
