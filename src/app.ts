@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import log from 'fancy-log';
 import lusca from 'lusca';
@@ -55,14 +55,14 @@ class App {
 
   private errorHandler() {
     // catch 404 and forward to error handler
-    this.app.use((_req, _res, next) => {
+    this.app.use((_req: Request, _res: Response, next: NextFunction) => {
       const err = new Error('Resource does not exist');
       // err.status = 404;
       next(err);
     });
 
     if (!isProduction) {
-      this.app.use((err, _req, res, _next) => {
+      this.app.use((err, _req: Request, res: Response, _next: NextFunction) => {
         log(err.stack);
         res.status(err.status || 500).json({
           error: {
@@ -74,7 +74,7 @@ class App {
       });
     }
 
-    this.app.use((err, _req, res, _next) => {
+    this.app.use((err, _req: Request, res: Response, _next: NextFunction) => {
       return res.status(err.status || 500).json({
         error: {
           message: err.message,
