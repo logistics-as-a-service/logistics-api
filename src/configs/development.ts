@@ -3,16 +3,16 @@ require('dotenv').config();
 
 import { URL } from 'url';
 
-const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1';
-const REDIS_PORT = process.env.REDIS_PORT || '6379';
+const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST || '127.0.0.1';
+const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT || '6379';
 
-const redisUrl = new URL(process.env.REDIS_URL || `redis://${REDIS_HOST}:${REDIS_PORT}/`);
+const redisUrl = new URL(process.env.LOGISTICS_REDIS_URL || `redis://${REDIS_HOST}:${REDIS_PORT}/`);
 
 export default {
   general: {
     env: 'development',
-    baseUrl: process.env.BASE_URL,
-    port: process.env.PORT || 3000
+    baseUrl: process.env.LOGISTICS_BASE_URL,
+    port: process.env.LOGISTICS_SERVER_PORT || 3000
   },
   redis: {
     host: redisUrl.hostname || 'localhost',
@@ -22,11 +22,11 @@ export default {
     prefix: 'sam:'
   },
   database: {
-    type: process.env.DB_TYPE || 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    name: process.env.DB_NAME
+    type: process.env.LOGISTICS_DB_TYPE || 'postgres',
+    host: process.env.LOGISTICS_DB_HOST,
+    port: process.env.LOGISTICS_DB_PORT,
+    username: process.env.LOGISTICS_DB_USERNAME,
+    password: process.env.LOGISTICS_DB_PASSWORD,
+    name: process.env.LOGISTICS_DB_NAME
   }
 };
