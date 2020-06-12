@@ -7,6 +7,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import config from 'config';
+import { LogisticsEmitter, EventType } from './Utils/Emittery';
 import './database/DbConnection';
 
 // import routes from './routes';
@@ -22,14 +23,14 @@ class App {
     this.middleware();
     // this.routes();
     this.errorHandler();
-    // this.loadEventListeners();
+    this.loadEventListeners();
   }
 
   private middleware() {
     const corsOptions = {
       credentials: true,
       origin: [],
-      optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+      optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
 
     this.app.use(cors(corsOptions));
@@ -47,7 +48,7 @@ class App {
     this.app.use(
       bodyParser.urlencoded({
         limit: '50mb',
-        extended: true
+        extended: true,
       })
     );
     this.app.use(bodyParser.json());
@@ -68,9 +69,9 @@ class App {
         res.status(err.status || 500).json({
           error: {
             message: err.message,
-            error: err
+            error: err,
           },
-          status: false
+          status: false,
         });
       });
     }
@@ -79,16 +80,21 @@ class App {
       return res.status(err.status || 500).json({
         error: {
           message: err.message,
-          error: {}
+          error: {},
         },
-        status: false
+        status: false,
       });
     });
   }
 
   // private routes() {}
 
-  // private loadEventListeners() {}
+  private loadEventListeners() {
+    LogisticsEmitter.addListener(EventType.SendWelcomeEmail, async (payload) =>
+      // Send email here
+      console.log(payload)
+    );
+  }
 }
 
 export default App;
