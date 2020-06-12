@@ -21,6 +21,10 @@ export default {
     password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
     prefix: 'logistics:',
   },
+  queue: {
+    name: process.env.LOGISTICS_QUEUE_NAME || 'mailer',
+    workers: process.env.LOGISTICS_WEB_CONCURRENCY || 2,
+  },
   database: {
     type: process.env.LOGISTICS_DB_TYPE || 'postgres',
     host: process.env.LOGISTICS_DB_HOST,

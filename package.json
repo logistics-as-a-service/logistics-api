@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_CONFIG_DIR=./src/configs npm run build && node build/server.js",
     "start:dev": "cross-env NODE_CONFIG_DIR=./src/configs nodemon",
+    "start:dev:worker": "cross-env NODE_CONFIG_DIR=./src/configs NODE_ENV=development ts-node ./src/email.worker.ts",
     "build": "rimraf ./build && tsc",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
@@ -54,6 +55,7 @@
     "@sendgrid/helpers": "^7.0.1",
     "@sendgrid/mail": "^7.1.1",
     "body-parser": "^1.19.0",
+    "bull": "^3.14.0",
     "class-validator": "^0.12.2",
     "compression": "^1.7.4",
     "config": "^3.3.1",
