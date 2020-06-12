@@ -12,14 +12,14 @@ export default {
   general: {
     env: 'development',
     baseUrl: process.env.LOGISTICS_BASE_URL,
-    port: process.env.LOGISTICS_SERVER_PORT || 3000
+    port: process.env.LOGISTICS_SERVER_PORT || 3000,
   },
   redis: {
     host: redisUrl.hostname || 'localhost',
     port: parseInt(redisUrl.port || '6379', 10),
     db: parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
     password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
-    prefix: 'sam:'
+    prefix: 'sam:',
   },
   database: {
     type: process.env.LOGISTICS_DB_TYPE || 'postgres',
@@ -27,6 +27,12 @@ export default {
     port: process.env.LOGISTICS_DB_PORT,
     username: process.env.LOGISTICS_DB_USERNAME,
     password: process.env.LOGISTICS_DB_PASSWORD,
-    name: process.env.LOGISTICS_DB_NAME
-  }
+    name: process.env.LOGISTICS_DB_NAME,
+  },
+  mail: {
+    api_key: process.env.LOGISTICS_SENDGRID_API_KEY,
+    api_key_id: process.env.LOGISTICS_SENDGRID_KEY_ID,
+    sender_name: process.env.LOGISTICS_SENDER_NAME,
+    sender_email: process.env.LOGISTICS_SENDER_MAIL,
+  },
 };
