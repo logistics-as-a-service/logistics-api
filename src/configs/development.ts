@@ -19,7 +19,7 @@ export default {
     port: parseInt(redisUrl.port || '6379', 10),
     db: parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
     password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
-    prefix: 'sam:',
+    prefix: 'logistics:',
   },
   database: {
     type: process.env.LOGISTICS_DB_TYPE || 'postgres',
