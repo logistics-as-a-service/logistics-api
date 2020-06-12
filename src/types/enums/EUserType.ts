@@ -1,6 +1,6 @@
 export enum EUserType {
-  ADMIN,
+  CUSTOMER,
   PARTNER,
   RIDER,
-  CUSTOMER
+  ADMIN,
 }
