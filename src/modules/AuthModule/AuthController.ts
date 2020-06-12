@@ -11,6 +11,7 @@ import RespUtil from '../../Utils/RespUtil';
 import { getUserRepository } from '../../database/repository';
 import { uuid } from '../../Utils/uuid';
 import { LogisticsEmitter, EventType } from '../../Utils/Emittery';
+import Utility from '../../Utils/Utility';
 
 const util = new RespUtil();
 
@@ -105,7 +106,7 @@ export default class AuthController {
     const { reset_token } = req.params;
     const currentTime = Math.floor(Date.now() / 1000);
 
-    const [{ validatePasswordOnly }, { encryptPassword }] = [ValidationHelper, AuthService];
+    const [{ validatePasswordOnly }, { encryptPassword }] = [ValidationHelper, Utility];
     const userRepo = getUserRepository();
 
     try {
@@ -134,7 +135,7 @@ export default class AuthController {
   static async updatePassword(req, res: Response, _next: NextFunction) {
     const { user } = req;
     const userRepo = getUserRepository();
-    const [{ updatePassword }, { encryptPassword }] = [ValidationHelper, AuthService];
+    const [{ updatePassword }, { encryptPassword }] = [ValidationHelper, Utility];
 
     try {
       const payload = pick(req.body, ['current_password', 'password', 'confirm_password']);

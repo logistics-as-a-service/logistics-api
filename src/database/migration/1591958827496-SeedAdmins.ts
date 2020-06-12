@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
 import { EUserType } from '../../types/enums/EUserType';
-import { Admin } from '../entity/Admin';
+import Admin from '../entity/Admin';
 
 export class SeedAdmins1591958827496 implements MigrationInterface {
   public async up(_queryRunner: QueryRunner): Promise<void> {

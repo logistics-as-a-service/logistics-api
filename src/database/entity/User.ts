@@ -9,7 +9,7 @@ import {
 import * as ip from 'ip';
 import bcrypt from 'bcrypt';
 import { EUserType } from '../../types/enums/EUserType';
-import PhoneUtility from '../../Utils/PhoneUtility';
+import Utility from '../../Utils/Utility';
 
 @Entity({ name: 'users' })
 export default class User extends BaseEntity {
@@ -70,9 +70,9 @@ export default class User extends BaseEntity {
       const saltRounds = bcrypt.genSaltSync(10);
       this.password = bcrypt.hashSync(this.password, saltRounds);
 
-      this.mobileNo = PhoneUtility.formatPhoneNumber(this.mobileNo);
-    } catch ({ mesage }) {
-      throw new Error(mesage);
+      this.mobileNo = Utility.formatPhoneNumber(this.mobileNo);
+    } catch ({ message }) {
+      throw new Error(message);
     }
   }
 

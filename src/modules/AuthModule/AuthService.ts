@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
-import * as EmailValidator from 'email-validator';
 import config from 'config';
-import bcrypt from 'bcrypt';
 
 import User from '../../database/entity/User';
 import CustomError from '../../Utils/CustomError';
@@ -33,18 +31,5 @@ export default class AuthService {
         return reject(new CustomError(404, error.message));
       }
     });
-  }
-
-  static encryptPassword(password) {
-    const saltRounds = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(password, saltRounds);
-  }
-
-  static validateEmailOrFail(email: string): string {
-    const isValid: boolean = EmailValidator.validate(email);
-    if (!isValid) {
-      throw new Error(`'${email}' is not a valid email address`);
-    }
-    return email;
   }
 }

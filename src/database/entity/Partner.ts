@@ -8,8 +8,8 @@ import {
   OneToOne,
   OneToMany,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { EDeliveryPaymentType } from '../../types/enums/EDeliveryPaymentType';
 import Subscription from './Subscription';
 import User from './User';
 import State from './State';
@@ -19,10 +19,10 @@ import Order from './Order';
 
 @Entity({ name: 'partners' })
 export default class Partner extends BaseEntity {
-  @Column({ generated: 'increment', primary: true, type: 'integer' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
@@ -41,16 +41,16 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'logo_url' })
   logoUrl: string;
 
-  @Column({ name: 'facebook_url' })
+  @Column({ name: 'facebook_url', nullable: true })
   facebookUrl: string;
 
-  @Column({ name: 'instagram_url' })
+  @Column({ name: 'instagram_url', nullable: true })
   instagramUrl: string;
 
-  @Column({ name: 'linkedin_url' })
+  @Column({ name: 'linkedin_url', nullable: true })
   linkedinUrl: string;
 
-  @Column({ name: 'website_url' })
+  @Column({ name: 'website_url', nullable: true })
   websiteUrl: string;
 
   @Column()
@@ -58,10 +58,10 @@ export default class Partner extends BaseEntity {
 
   @Column({ nullable: false })
   domain: string;
-
+  /*
   @Column({ name: 'delivery_payment_type', nullable: false })
   deliveryPaymentType: EDeliveryPaymentType;
-
+*/
   @ManyToOne(() => Subscription)
   @JoinColumn({ name: 'subscription_id' })
   subscription: Subscription;

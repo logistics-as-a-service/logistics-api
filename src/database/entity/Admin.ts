@@ -2,7 +2,7 @@ import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOn
 import User from './User';
 
 @Entity({ name: 'admin' })
-export class Admin extends BaseEntity {
+export default class Admin extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

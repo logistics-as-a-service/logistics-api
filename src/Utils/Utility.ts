@@ -1,10 +1,12 @@
+import bcrypt from 'bcrypt';
 import phoneUtil from 'google-libphonenumber';
 import CustomError from './CustomError';
+import * as EmailValidator from 'email-validator';
 
 const phoneUtilInstance = phoneUtil.PhoneNumberUtil.getInstance();
 const { E164 } = phoneUtil.PhoneNumberFormat;
 
-export default class PhoneUtility {
+export default class Utility {
   /**
    * Method to format phone number
    * @param {string} phone
@@ -23,5 +25,26 @@ export default class PhoneUtility {
     }
 
     return phoneUtilInstance.format(number, E164);
+  }
+
+  /**
+   * Validate Email
+   * @param email string
+   */
+  static validateEmail(email: string): string {
+    const isValid: boolean = EmailValidator.validate(email);
+    if (!isValid) {
+      throw new Error(`'${email}' is not a valid email address`);
+    }
+    return email;
+  }
+
+  /**
+   * Encrypt password
+   * @param password
+   */
+  static encryptPassword(password: string) {
+    const saltRounds = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, saltRounds);
   }
 }
