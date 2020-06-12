@@ -34,6 +34,15 @@ export default class User extends BaseEntity {
   @Column({ name: 'last_login_date' })
   lastLoginDate: Date;
 
+  @Column({ name: 'is_disabled', default: false })
+  isDisabled: boolean;
+
+  @Column({ name: 'reset_token', nullable: true })
+  resetToken: string;
+
+  @Column({ name: 'reset_expires', type: 'integer', nullable: true })
+  resetExpires: number;
+
   @Column({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
@@ -65,5 +74,9 @@ export default class User extends BaseEntity {
     } catch ({ mesage }) {
       throw new Error(mesage);
     }
+  }
+
+  validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }

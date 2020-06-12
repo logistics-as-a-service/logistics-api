@@ -3,6 +3,11 @@ require('dotenv').config();
 
 import { URL } from 'url';
 
+const resetPasswordExp = Math.floor(Date.now() / 1000) + 60 * 60 * 1; // 1hours
+
+const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // 24hours
+const refreshExp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // 7 days
+
 const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST || '127.0.0.1';
 const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT || '6379';
 
@@ -12,6 +17,7 @@ export default {
   general: {
     env: 'development',
     baseUrl: process.env.LOGISTICS_BASE_URL,
+    fontendUrl: process.env.LOGISTICS_FONTEND_URL,
     port: process.env.LOGISTICS_SERVER_PORT || 3000,
   },
   redis: {
@@ -20,6 +26,12 @@ export default {
     db: parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
     password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
     prefix: 'logistics:',
+  },
+  auth: {
+    secret: process.env.LOGISTICS_JWT_SECRET,
+    refreshSecret: process.env.LOGISTICS_JWT_REFRESH_SECRET,
+    signOptions: { expiresIn: exp, refreshExpIn: refreshExp },
+    resetPasswordExp,
   },
   queue: {
     name: process.env.LOGISTICS_QUEUE_NAME || 'mailer',

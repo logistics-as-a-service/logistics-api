@@ -1,3 +1,3 @@
 module.exports = {
-  reject: ['typescript', 'tslint']
+  reject: ['typescript', 'tslint', 'uuid'],
 };

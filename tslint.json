@@ -25,7 +25,8 @@
       "options": ["allow-leading-underscore", "allow-pascal-case"]
     },
     "no-unused-expression": true,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "curly": false
   },
   "exclude": ["node_modules"],
   "rulesDirectory": []

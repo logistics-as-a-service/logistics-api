@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import log from 'fancy-log';
 import lusca from 'lusca';
+import passport from 'passport';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -10,17 +11,21 @@ import config from 'config';
 import { LogisticsEmitter, EventType } from './Utils/Emittery';
 import './database/DbConnection';
 
-// import routes from './routes';
+import routes from './routes';
+
 const { env } = config.get('general');
 const isProduction = env === 'production';
+
+const requirePassport = () => require('./modules/AuthModule/PassportAuth');
 
 class App {
   public app: Application;
 
   constructor() {
     this.app = express();
+    requirePassport();
     this.middleware();
-    // this.routes();
+    this.routes();
     this.errorHandler();
     this.loadEventListeners();
   }
@@ -40,7 +45,7 @@ class App {
     this.app.use(compression());
     this.app.use(helmet());
 
-    // this.app.use(passport.initialize());
+    this.app.use(passport.initialize());
 
     this.app.use(morgan('dev'));
 
@@ -86,7 +91,9 @@ class App {
     });
   }
 
-  // private routes() {}
+  private routes() {
+    this.app.use(routes);
+  }
 
   private loadEventListeners() {
     LogisticsEmitter.addListener(EventType.SendWelcomeEmail, async (payload) =>
