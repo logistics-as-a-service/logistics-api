@@ -11,7 +11,6 @@ import { LogisticsEmitter, EventType } from './Utils/Emittery';
 import './database/DbConnection';
 
 // import routes from './routes';
-
 const { env } = config.get('general');
 const isProduction = env === 'production';
 
@@ -92,6 +91,7 @@ class App {
   private loadEventListeners() {
     LogisticsEmitter.addListener(EventType.SendWelcomeEmail, async (payload) =>
       // Send email here
+      // EmailService.send();
       console.log(payload)
     );
   }

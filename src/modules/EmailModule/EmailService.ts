@@ -9,7 +9,7 @@ const { Mail } = classes;
 const { sender_name, sender_email } = config.get('mail');
 
 export default class EmailService {
-  static send(data: IMailer) {
+  static send(data: IMailer): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         data.isBulkMail = false;
@@ -34,7 +34,7 @@ export default class EmailService {
             subject: data.subject,
             header: data.preHeader ? data.preHeader : data.subject,
           },
-          personalizations: data.to.map(info => {
+          personalizations: data.to.map((info) => {
             if (typeof info === 'string') {
               return { to: [{ name: info, email: info }] };
             } else {
