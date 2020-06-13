@@ -26,6 +26,9 @@ export default class Partner extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @Column({ name: 'full_name', nullable: false })
+  fullName: string;
+
   @Column({ name: 'company_name', nullable: false })
   companyName: string;
 
@@ -35,10 +38,10 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'business_email', nullable: false })
   businessEmail: string;
 
-  @Column({ name: 'banner_url' })
+  @Column({ name: 'banner_url', nullable: true })
   bannerUrl: string;
 
-  @Column({ name: 'logo_url' })
+  @Column({ name: 'logo_url', nullable: true })
   logoUrl: string;
 
   @Column({ name: 'facebook_url', nullable: true })
@@ -53,7 +56,7 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'website_url', nullable: true })
   websiteUrl: string;
 
-  @Column()
+  @Column({ name: 'sub_domain', nullable: false })
   subdomain: string;
 
   @Column({ nullable: false })
@@ -113,10 +116,16 @@ export default class Partner extends BaseEntity {
   updateDatesOnInsert() {
     this.createdAt = new Date();
     this.updatedAt = new Date();
+
+    this.calSubExpireDate();
   }
 
   @BeforeUpdate()
   updateDatesOnUpdate() {
     this.updatedAt = new Date();
+  }
+
+  private calSubExpireDate() {
+    this.subscriptionDate = new Date();
   }
 }

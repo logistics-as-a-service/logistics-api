@@ -19,7 +19,7 @@ export default class User extends BaseEntity {
   @Column({ nullable: false, length: 100, unique: true })
   email: string;
 
-  @Column({ name: 'mobile_no', length: 100, nullable: false })
+  @Column({ name: 'mobile_no', length: 100, nullable: true })
   mobileNo: string;
 
   @Column({ type: 'integer', name: 'user_type' })

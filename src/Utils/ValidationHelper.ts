@@ -74,6 +74,70 @@ export default class ValidationHelper {
     });
   }
 
+  static validatePartner() {
+    const schemaContact = Joi.object().keys({
+      mobile_no: Joi.string().required(),
+    });
+
+    const urlValidation = (field: string) =>
+      Joi.string()
+        .regex(
+          /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/
+        )
+        .optional()
+        .error(new Error(`${field} not valid`));
+
+    return Joi.object().keys({
+      email: Joi.string()
+        .email({ minDomainSegments: 2 })
+        .required()
+        .error(new Error('Email address is required!')),
+      password: Joi.string()
+        .regex(/^[a-zA-Z0-9!@#$%&*]{3,25}$/)
+        .required()
+        .error(new Error('Invalid password, special character is not allow!')),
+      confirm_password: Joi.any()
+        .valid(Joi.ref('password'))
+        .required()
+        .error(new Error('Password and confirm password must match')),
+      full_name: Joi.string()
+        .min(3)
+        .max(50)
+        .required()
+        .error(new Error('Full name must be at least 3 characters long')),
+      company_name: Joi.string()
+        .min(5)
+        .max(100)
+        .required()
+        .error(new Error('Company must be at least 5 characters long')),
+      business_address: Joi.string()
+        .min(10)
+        .max(100)
+        .required()
+        .error(new Error('Business address must be at least 10 characters long')),
+      business_email: Joi.string()
+        .email({ minDomainSegments: 2 })
+        .required()
+        .error(new Error('Business email address is required!')),
+      domain: Joi.string().domain().required().error(new Error('Please enter valid domain name!')),
+      subdomain: Joi.string()
+        .regex(/^([a-zA-Z0-9][a-zA-Z0-9-_]*\.)*[a-zA-Z0-9]*[a-zA-Z0-9-_]*[[a-zA-Z0-9]+$/)
+        .required()
+        .error(new Error('Sub domain is not valid!')),
+      subscription: Joi.number().required().error(new Error('Subscription type is required!')),
+      contacts: Joi.array()
+        .items(schemaContact)
+        .required()
+        .error(new Error('Please provide array of phone number')),
+      banner_url: urlValidation('banner url'),
+      logo_url: urlValidation('logo url'),
+      facebook_url: urlValidation('facebook url'),
+      instagram_url: urlValidation('instagram url'),
+      linkedin_url: urlValidation('linkedin url'),
+      website_url: Joi.string().domain().optional().error(new Error('Check website url')),
+    });
+  }
+
   static validateLogin() {
     return Joi.object()
       .keys({
