@@ -20,7 +20,7 @@ import Order from './Order';
 
 @Entity({ name: 'partners' })
 export default class Partner extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @OneToOne(() => User, { cascade: true })

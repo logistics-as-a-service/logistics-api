@@ -15,9 +15,6 @@ const util = new RespUtil();
 export default class PartnerController {
   /**
    * Endpoint for partner signup
-   * 	"banner_url": "",
-   *  "facebook_url": "",
-   *  "linkedin_url": ""
    */
   static async registerPartner(req: Request, res: Response, _next: NextFunction) {
     const { validatePartner } = ValidationHelper;

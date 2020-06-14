@@ -12,7 +12,8 @@ export default class Subscription extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'money' })
+  // @Column({ type: 'money' })
+  @Column({ type: 'decimal', precision: 12, scale: 2 })
   price: number;
 
   @Column({ name: 'subscription_type_duration', type: 'integer' })

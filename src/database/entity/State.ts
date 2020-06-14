@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, Column, OneToMany } from 'typeorm';
 import { Lga } from './Lga';
+import { City } from './City';
 
 @Entity({ name: 'states' })
 export default class State extends BaseEntity {
@@ -9,24 +10,27 @@ export default class State extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   lat: string;
 
-  @Column()
+  @Column({ nullable: true })
   lng: string;
 
-  @Column({ name: 'min_lng' })
+  @Column({ name: 'min_lng', nullable: true })
   minLng: string;
 
-  @Column({ name: 'max_lng' })
+  @Column({ name: 'max_lng', nullable: true })
   maxLng: string;
 
-  @Column({ name: 'min_lat' })
+  @Column({ name: 'min_lat', nullable: true })
   minLat: string;
 
-  @Column({ name: 'max_lat' })
+  @Column({ name: 'max_lat', nullable: true })
   maxLat: string;
 
-  @OneToMany(() => Lga, (lga) => lga.state)
-  lga: Lga[];
+  @OneToMany(() => City, (city) => city.state, { cascade: true })
+  cities: City[];
+
+  @OneToMany(() => Lga, (lga) => lga.state, { cascade: true })
+  lgas: Lga[];
 }

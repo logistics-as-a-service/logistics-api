@@ -9,7 +9,7 @@ export class Lga extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => State, (state) => state.lga)
+  @ManyToOne(() => State, (state) => state.lgas)
   @JoinColumn({ name: 'state_id' })
   state: State;
 }
