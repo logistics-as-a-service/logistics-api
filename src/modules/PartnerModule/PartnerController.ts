@@ -82,8 +82,6 @@ export default class PartnerController {
         ...camelCase(data),
       });
 
-      console.log(partner);
-
       await partnerRepo.update(partner.id, partner);
 
       // return partnerRepo.findOne(partner_id);
