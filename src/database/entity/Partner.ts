@@ -10,6 +10,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import moment from 'moment';
 import Subscription from './Subscription';
 import User from './User';
 import State from './State';
@@ -65,7 +66,7 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'delivery_payment_type', nullable: false })
   deliveryPaymentType: EDeliveryPaymentType;
 */
-  @ManyToOne(() => Subscription)
+  @ManyToOne(() => Subscription, { eager: true })
   @JoinColumn({ name: 'subscription_id' })
   subscription: Subscription;
 
@@ -126,6 +127,10 @@ export default class Partner extends BaseEntity {
   }
 
   private calSubExpireDate() {
-    this.subscriptionDate = new Date();
+    const durantn = this.subscription.subscriptionDuration;
+    const currentDate = moment(new Date());
+
+    this.subscriptionDate = currentDate.toDate();
+    this.subscriptionExpireDate = currentDate.add(durantn, 'months').toDate();
   }
 }

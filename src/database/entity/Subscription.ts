@@ -15,6 +15,9 @@ export default class Subscription extends BaseEntity {
   @Column({ type: 'money' })
   price: number;
 
+  @Column({ name: 'subscription_type_duration', type: 'integer' })
+  subscriptionDuration: number;
+
   @Column({ nullable: false })
   type: ESubscriptionType;
 }
