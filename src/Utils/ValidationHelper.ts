@@ -129,6 +129,8 @@ export default class ValidationHelper {
         .items(schemaContact)
         .required()
         .error(new Error('Please provide array of phone number')),
+      state_id: Joi.number().required().error(new Error('State is required')),
+      city_id: Joi.number().required().error(new Error('City is required')),
       banner_url: urlValidation('banner url'),
       logo_url: urlValidation('logo url'),
       facebook_url: urlValidation('facebook url'),

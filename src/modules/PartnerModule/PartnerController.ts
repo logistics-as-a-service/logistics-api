@@ -9,8 +9,10 @@ import RespUtil from '../../Utils/RespUtil';
 import Partner from '../../database/entity/Partner';
 import { EUserType } from '../../types/enums/EUserType';
 import User from '../../database/entity/User';
+import { getRepository } from 'typeorm';
 
 const util = new RespUtil();
+const PG_UNIQUE_CONSTRAINT_VIOLATION = '23505';
 
 export default class PartnerController {
   /**
@@ -30,6 +32,8 @@ export default class PartnerController {
       'domain',
       'subscription',
       'contacts',
+      'state_id',
+      'city_id',
       'banner_url',
       'logo_url',
       'facebook_url',
@@ -44,19 +48,28 @@ export default class PartnerController {
 
       const partner = new Partner();
 
-      const { email, password, confirm_password, ...data } = payload;
+      const { email, password, confirm_password, contacts, ...data } = payload;
       const user: Partial<User> = {
         email,
         password,
-        mobileNo: payload.contacts[0].mobile_no,
+        mobileNo: contacts[0].mobile_no,
         userType: EUserType.PARTNER,
       };
 
-      Object.assign(partner, { user, ...camelCase(data) });
+      Object.assign(partner, { user, contacts: camelCase(contacts), ...camelCase(data) });
 
-      console.log(partner);
-    } catch ({ statusCode, message }) {
-      return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);
+      const partnerRepo = getRepository(Partner);
+      const partber = partnerRepo.create(partner);
+
+      const response = await partnerRepo.save(partber);
+
+      util.setSuccess(200, 'Register successful!', response);
+      return util.send(res);
+    } catch (error) {
+      if (error && error.code === PG_UNIQUE_CONSTRAINT_VIOLATION) {
+        return util.setError(HttpStatus.BAD_REQUEST, error.detail).send(res);
+      }
+      return util.setError(error.statusCode || HttpStatus.BAD_REQUEST, error.message).send(res);
     }
   }
 

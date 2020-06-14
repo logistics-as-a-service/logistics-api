@@ -36,7 +36,7 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'business_address', nullable: false })
   businessAddress: string;
 
-  @Column({ name: 'business_email', nullable: false })
+  @Column({ name: 'business_email', nullable: false, unique: true })
   businessEmail: string;
 
   @Column({ name: 'banner_url', nullable: true })
@@ -57,10 +57,10 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'website_url', nullable: true })
   websiteUrl: string;
 
-  @Column({ name: 'sub_domain', nullable: false })
+  @Column({ name: 'sub_domain', nullable: false, unique: true })
   subdomain: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   domain: string;
   /*
   @Column({ name: 'delivery_payment_type', nullable: false })
@@ -80,7 +80,7 @@ export default class Partner extends BaseEntity {
   @JoinColumn({ name: 'state_id' })
   state: State;
 
-  @OneToMany(() => PartnerContact, (contact) => contact.partner)
+  @OneToMany(() => PartnerContact, (contact) => contact.partner, { cascade: true })
   contacts: PartnerContact[];
 
   @OneToMany(() => Rider, (rider) => rider.partner)
@@ -89,10 +89,10 @@ export default class Partner extends BaseEntity {
   @OneToMany(() => Order, (order) => order.partner)
   orders: Order[];
 
-  @Column({ name: 'bank_acct_no', nullable: false })
+  @Column({ name: 'bank_acct_no', nullable: true })
   bankAcctNo: string;
 
-  @Column({ name: 'bank_name', nullable: false })
+  @Column({ name: 'bank_name', nullable: true })
   bankName: string;
 
   @Column({ name: 'bank_acct_name', nullable: true })
