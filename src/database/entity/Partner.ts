@@ -85,7 +85,9 @@ export default class Partner extends BaseEntity {
   @JoinColumn({ name: 'city_id' })
   city: City;
 
-  @OneToMany(() => PartnerContact, (contact) => contact.partner, { cascade: true })
+  @OneToMany(() => PartnerContact, (contact) => contact.partner, {
+    cascade: true,
+  })
   contacts: PartnerContact[];
 
   @OneToMany(() => Rider, (rider) => rider.partner)
@@ -137,5 +139,9 @@ export default class Partner extends BaseEntity {
 
     this.subscriptionDate = currentDate.toDate();
     this.subscriptionExpireDate = currentDate.add(sub?.subscriptionDuration, 'months').toDate();
+  }
+
+  isOwnBy(user: User) {
+    return this.user.id === user.id;
   }
 }

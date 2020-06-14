@@ -9,7 +9,7 @@ import RespUtil from '../../Utils/RespUtil';
 import Partner from '../../database/entity/Partner';
 import { EUserType } from '../../types/enums/EUserType';
 import User from '../../database/entity/User';
-import { getRepository } from 'typeorm';
+import { getPartnerRepository } from '../../database/repository/index';
 
 const util = new RespUtil();
 const PG_UNIQUE_CONSTRAINT_VIOLATION = '23505';
@@ -49,7 +49,7 @@ export default class PartnerController {
         ...camelCase(data),
       });
 
-      const partnerRepo = getRepository(Partner);
+      const partnerRepo = getPartnerRepository();
       const partber = partnerRepo.create(partner);
 
       const response = await partnerRepo.save(partber);
@@ -64,25 +64,27 @@ export default class PartnerController {
     }
   }
 
-  static async updatePartner(req: Request, res: Response, _next: NextFunction) {
-    const { partner_id } = req.params;
+  static async updatePartner(req, res: Response, _next: NextFunction) {
+    const partnerRepo = getPartnerRepository();
+    const { partner } = req;
 
     try {
-      const partnerRepo = getRepository(Partner);
-      const partner = await partnerRepo.findOneOrFail({ where: { id: partner_id } });
-
       const payload = PartnerController.validateRequest(req);
 
       const { contacts, subscription, state_id: state, city_id: city, ...data } = payload;
+      // TODO: fix OneToMany update issues
+      // const contactList = contacts && contacts.length > 0 ? camelCase(contacts) : partner.contacts;
 
       Object.assign(partner, {
-        // contacts: contacts && contacts.length > 0 ? camelCase(contacts) : partner.contacts,
+        // contacts: contactList,
         state: state ? state : partner.state,
         city: city ? city : partner.city,
         ...camelCase(data),
       });
 
-      await partnerRepo.update(partner_id, partner);
+      console.log(partner);
+
+      await partnerRepo.update(partner.id, partner);
 
       // return partnerRepo.findOne(partner_id);
       util.setSuccess(200, 'Register successful!', {});
