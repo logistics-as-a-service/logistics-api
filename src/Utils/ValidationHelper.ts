@@ -140,6 +140,54 @@ export default class ValidationHelper {
     });
   }
 
+  static validatePartnerUpdate() {
+    const schemaContact = Joi.object().keys({
+      mobile_no: Joi.string().required(),
+    });
+
+    const urlValidation = (field: string) =>
+      Joi.string()
+        .regex(
+          /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/
+        )
+        .optional()
+        .error(new Error(`${field} not valid`));
+
+    return Joi.object().keys({
+      full_name: Joi.string()
+        .min(5)
+        .max(50)
+        .error(new Error('Full name must be at least 5 characters long')),
+      company_name: Joi.string()
+        .min(10)
+        .max(100)
+        .error(new Error('Company must be at least 10 characters long')),
+      business_address: Joi.string()
+        .min(10)
+        .max(100)
+        .error(new Error('Business address must be at least 10 characters long')),
+      business_email: Joi.string()
+        .email({ minDomainSegments: 2 })
+        .error(new Error('Business email address is required!')),
+      domain: Joi.string().domain().error(new Error('Please enter valid domain name!')),
+      subdomain: Joi.string()
+        .regex(/^([a-zA-Z0-9][a-zA-Z0-9-_]*\.)*[a-zA-Z0-9]*[a-zA-Z0-9-_]*[[a-zA-Z0-9]+$/)
+        .error(new Error('Sub domain is not valid!')),
+      contacts: Joi.array()
+        .items(schemaContact)
+        .error(new Error('Please provide array of phone number')),
+      subscription: Joi.number().error(new Error('Subscription type is required!')),
+      state_id: Joi.number().error(new Error('State is required')),
+      city_id: Joi.number().error(new Error('City is required')),
+      banner_url: urlValidation('banner url'),
+      logo_url: urlValidation('logo url'),
+      facebook_url: urlValidation('facebook url'),
+      instagram_url: urlValidation('instagram url'),
+      linkedin_url: urlValidation('linkedin url'),
+      website_url: Joi.string().domain().optional().error(new Error('Website url is not valid!')),
+    });
+  }
+
   static validateLogin() {
     return Joi.object()
       .keys({

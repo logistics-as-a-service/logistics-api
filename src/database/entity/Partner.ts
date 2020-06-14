@@ -17,6 +17,7 @@ import State from './State';
 import PartnerContact from './PartnerContact';
 import Rider from './Riders';
 import Order from './Order';
+import { City } from './City';
 
 @Entity({ name: 'partners' })
 export default class Partner extends BaseEntity {
@@ -66,7 +67,7 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'delivery_payment_type', nullable: false })
   deliveryPaymentType: EDeliveryPaymentType;
 */
-  @ManyToOne(() => Subscription, { eager: true })
+  @ManyToOne(() => Subscription)
   @JoinColumn({ name: 'subscription_id' })
   subscription: Subscription;
 
@@ -79,6 +80,10 @@ export default class Partner extends BaseEntity {
   @OneToOne(() => State)
   @JoinColumn({ name: 'state_id' })
   state: State;
+
+  @OneToOne(() => City)
+  @JoinColumn({ name: 'city_id' })
+  city: City;
 
   @OneToMany(() => PartnerContact, (contact) => contact.partner, { cascade: true })
   contacts: PartnerContact[];
@@ -126,11 +131,11 @@ export default class Partner extends BaseEntity {
     this.updatedAt = new Date();
   }
 
-  private calSubExpireDate() {
-    const durantn = this.subscription.subscriptionDuration;
+  private async calSubExpireDate() {
+    const sub = await Subscription.findOne(this.subscription);
     const currentDate = moment(new Date());
 
     this.subscriptionDate = currentDate.toDate();
-    this.subscriptionExpireDate = currentDate.add(durantn, 'months').toDate();
+    this.subscriptionExpireDate = currentDate.add(sub?.subscriptionDuration, 'months').toDate();
   }
 }
