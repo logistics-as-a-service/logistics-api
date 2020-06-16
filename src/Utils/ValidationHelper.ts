@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import Joi from '@hapi/joi';
 
 /**
@@ -185,6 +184,39 @@ export default class ValidationHelper {
       instagram_url: urlValidation('instagram url'),
       linkedin_url: urlValidation('linkedin url'),
       website_url: Joi.string().domain().optional().error(new Error('Website url is not valid!')),
+    });
+  }
+
+  static validateSubUpdate() {
+    return Joi.object().keys({
+      name: Joi.string()
+        .min(3)
+        .max(100)
+        .error(new Error('Subscription name must be at least 5 characters long')),
+      description: Joi.string().error(new Error('Description is required')),
+      price: Joi.number().error(new Error('Price is required!')),
+      subscription_duration: Joi.number().error(
+        new Error('Subscription type duration is required!')
+      ),
+      type: Joi.string().error(new Error('Subscription type is required!')),
+      is_disabled: Joi.boolean().error(new Error('Disable field is required')),
+    });
+  }
+
+  static validateSub() {
+    return Joi.object().keys({
+      name: Joi.string()
+        .min(3)
+        .max(100)
+        .required()
+        .error(new Error('Subscription name must be at least 5 characters long')),
+      description: Joi.string().required().error(new Error('Description is required')),
+      price: Joi.number().required().error(new Error('Price is required!')),
+      subscription_duration: Joi.number()
+        .required()
+        .error(new Error('Subscription type duration is required!')),
+      type: Joi.string().required().error(new Error('Subscription type is required!')),
+      is_disabled: Joi.boolean().error(new Error('Disable field is required')),
     });
   }
 

@@ -21,4 +21,7 @@ export default class Subscription extends BaseEntity {
 
   @Column({ nullable: false })
   type: ESubscriptionType;
+
+  @Column({ name: 'is_disabled', default: false })
+  isDisabled: boolean;
 }

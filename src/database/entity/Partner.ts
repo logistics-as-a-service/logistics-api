@@ -10,7 +10,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import moment from 'moment';
 import Subscription from './Subscription';
 import User from './User';
 import State from './State';
@@ -18,6 +17,7 @@ import PartnerContact from './PartnerContact';
 import Rider from './Riders';
 import Order from './Order';
 import { City } from './City';
+import SubService from '../../modules/SubModule/SubService';
 
 @Entity({ name: 'partners' })
 export default class Partner extends BaseEntity {
@@ -134,11 +134,10 @@ export default class Partner extends BaseEntity {
   }
 
   private async calSubExpireDate() {
-    const sub = await Subscription.findOne(this.subscription);
-    const currentDate = moment(new Date());
+    const [start, expired] = await SubService.calSubsription(this.subscription);
 
-    this.subscriptionDate = currentDate.toDate();
-    this.subscriptionExpireDate = currentDate.add(sub?.subscriptionDuration, 'months').toDate();
+    this.subscriptionDate = start;
+    this.subscriptionExpireDate = expired;
   }
 
   isOwnBy(user: User) {
