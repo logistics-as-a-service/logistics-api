@@ -121,11 +121,11 @@ export default class Partner extends BaseEntity {
   updatedAt: Date;
 
   @BeforeInsert()
-  updateDatesOnInsert() {
+  async updateDatesOnInsert() {
     this.createdAt = new Date();
     this.updatedAt = new Date();
 
-    this.calSubExpireDate();
+    await this.calSubExpireDate();
   }
 
   @BeforeUpdate()

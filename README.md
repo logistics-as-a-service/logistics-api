@@ -36,6 +36,11 @@ LOGISTICS_WEB_CONCURRENCY=2
 
 LOGISTICS_FONTEND_URL = http://localhost:4000
 
+AWS_SECRET=
+AWS_KEY=
+AWS_REGION=us-east-1
+AWS_BUCKET=
+
 ```
 
 **To start server**

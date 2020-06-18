@@ -51,4 +51,11 @@ export default {
     sender_name: process.env.LOGISTICS_SENDER_NAME,
     sender_email: process.env.LOGISTICS_SENDER_MAIL,
   },
+  s3: {
+    maxUploadFileSize: process.env.LOGISTICS_MAX_UPLOAD_SIZE || 1 * 1024 * 1024, // 100MB,
+    secret: process.env.LOGISTICS_AWS_SECRET,
+    key: process.env.LOGISTICS_AWS_KEY,
+    region: process.env.LOGISTICS_AWS_REGION,
+    bucket: process.env.LOGISTICS_AWS_BUCKET,
+  },
 };

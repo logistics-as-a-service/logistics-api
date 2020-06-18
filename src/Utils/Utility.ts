@@ -47,4 +47,12 @@ export default class Utility {
     const saltRounds = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, saltRounds);
   }
+
+  /**
+   * Generate unique ID
+   * @returns string
+   */
+  static generateID(m = Math, d = Date, h = 16, s = (s) => m.floor(s).toString(h)) {
+    return s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));
+  }
 }

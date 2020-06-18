@@ -69,13 +69,13 @@ export default class ValidationHelper {
         .valid(Joi.ref('password'))
         .required()
         .error(new Error('Password and confirm password must match')),
-      mobile_no: Joi.string().required().error(new Error('Phone number is compulsory')),
+      mobile_no: Joi.string().max(11).required().error(new Error('Phone number is compulsory')),
     });
   }
 
   static validatePartner() {
     const schemaContact = Joi.object().keys({
-      mobile_no: Joi.string().required(),
+      mobile_no: Joi.string().max(11).required(),
     });
 
     const urlValidation = (field: string) =>
@@ -141,7 +141,7 @@ export default class ValidationHelper {
 
   static validatePartnerUpdate() {
     const schemaContact = Joi.object().keys({
-      mobile_no: Joi.string().required(),
+      mobile_no: Joi.string().max(11).required(),
     });
 
     const urlValidation = (field: string) =>
@@ -232,5 +232,39 @@ export default class ValidationHelper {
           .regex(/^[a-zA-Z0-9!@#$%&*]{3,25}$/),
       })
       .with('email', 'password');
+  }
+
+  static validateRider() {
+    return Joi.object().keys({
+      email: Joi.string()
+        .email({ minDomainSegments: 2 })
+        .required()
+        .error(new Error('Email address is required!')),
+      password: Joi.string()
+        .regex(/^[a-zA-Z0-9!@#$%&*]{3,25}$/)
+        .required()
+        .error(new Error('Invalid password, special character is not allow!')),
+      confirm_password: Joi.any()
+        .valid(Joi.ref('password'))
+        .required()
+        .error(new Error('Password and confirm password must match')),
+      first_name: Joi.string()
+        .min(3)
+        .max(50)
+        .required()
+        .error(new Error('First name must be at least 3 characters long')),
+      last_name: Joi.string()
+        .min(3)
+        .max(100)
+        .required()
+        .error(new Error('Last name must be at least 3 characters long')),
+      mobile_no: Joi.string()
+        .max(11)
+        .required()
+        .error(new Error('Phone number is required and must be at 11')),
+      // profile_image: Joi.string()
+      //   .required()
+      //   .error(new Error('Please upload profile image is required!')),
+    });
   }
 }

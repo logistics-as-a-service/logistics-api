@@ -71,10 +71,11 @@ class App {
       this.app.use((err, _req: Request, res: Response, _next: NextFunction) => {
         log(err.stack);
         res.status(err.status || 500).json({
-          error: {
-            message: err.message,
-            error: err,
-          },
+          // error: {
+          //   message: err.message,
+          //   error: err,
+          // },
+          message: err.message,
           status: false,
         });
       });

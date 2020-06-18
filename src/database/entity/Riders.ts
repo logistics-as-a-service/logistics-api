@@ -7,7 +7,7 @@ export default class Rider extends BaseEntity {
   @Column({ generated: 'increment', primary: true, type: 'integer' })
   id: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
@@ -21,9 +21,12 @@ export default class Rider extends BaseEntity {
   @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ name: 'profile_image' })
-  profileImage: string;
+  @Column({ name: 'profile_image', nullable: false })
+  profileImage?: string;
 
-  @Column({ name: 'is_engaged', type: 'boolean' })
+  @Column({ name: 'is_engaged', type: 'boolean', default: false })
   isEngaged: boolean;
+
+  @Column({ name: 'is_retired', type: 'boolean', default: false })
+  isRetired: boolean;
 }
