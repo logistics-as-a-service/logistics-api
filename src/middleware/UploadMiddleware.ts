@@ -32,6 +32,8 @@ class UploadMiddleware {
     this.options = options;
     this.isFieldsValid = false;
 
+    this.request.body = Object.create(null);
+
     this.s3 = new S3({
       accessKeyId: key,
       secretAccessKey: secret,
@@ -54,6 +56,8 @@ class UploadMiddleware {
 
       this.busboy.on('file', async (_fieldname, fileStream, filename, _encoding, mimetype) => {
         try {
+          if (!filename) return fileStream.resume();
+
           if (!this.isFieldsValid) this.validateInputFields();
 
           // validate minetype
@@ -93,9 +97,9 @@ class UploadMiddleware {
         }
       });
 
-      this.busboy.on('filesLimit', () =>
-        this.done(new Error(`Maximum ${this.options.maxFiles} files allowed!`), false)
-      );
+      this.busboy.on('filesLimit', () => {
+        this.done(new Error(`Maximum ${this.options.maxFiles} files allowed!`), false);
+      });
 
       this.busboy.on('finish', () => console.log('finish'));
 
