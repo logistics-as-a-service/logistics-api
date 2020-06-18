@@ -23,14 +23,10 @@ export default async (req, res: Response, next: NextFunction) => {
     }
 
     const partnerRepo = getPartnerRepository();
-    const currentPartner = await partnerRepo.findOne({
+    const currentPartner = await partnerRepo.findOneOrFail({
       where: { id: partnerId },
       relations: ['user'],
     });
-
-    if (!currentPartner) {
-      throw new CustomError(HttpStatus.NOT_FOUND, `Partner with ID ${partnerId} not found!`);
-    }
 
     const owner = currentPartner.isOwnBy(user);
     delete currentPartner.user;

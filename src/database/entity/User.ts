@@ -5,11 +5,16 @@ import {
   BeforeInsert,
   BeforeUpdate,
   PrimaryGeneratedColumn,
+  OneToOne,
 } from 'typeorm';
 import * as ip from 'ip';
 import bcrypt from 'bcrypt';
 import { EUserType } from '../../types/enums/EUserType';
 import Utility from '../../Utils/Utility';
+import Rider from './Riders';
+import Partner from './Partner';
+import Customer from './Customer';
+import Admin from './Admin';
 
 @Entity({ name: 'users' })
 export default class User extends BaseEntity {
@@ -48,6 +53,21 @@ export default class User extends BaseEntity {
 
   @Column({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
+
+  // ::::::::::: DON'T TOUCH ::::::::: //
+  @OneToOne(() => Partner, (partner) => partner.user, { eager: true })
+  partner: Partner;
+
+  @OneToOne(() => Customer, (customer) => customer.user, { eager: true })
+  customer: Customer;
+
+  @OneToOne(() => Admin, (admin) => admin.user, { eager: true })
+  admin: Admin;
+
+  @OneToOne(() => Rider, (rider) => rider.user, { eager: true })
+  rider: Rider;
+
+  // ::::::::::: END DON'T TOUCH ::::::::: //
 
   @BeforeInsert()
   updateDatesOnInsert() {

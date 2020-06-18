@@ -90,7 +90,7 @@ export default class Partner extends BaseEntity {
   })
   contacts: PartnerContact[];
 
-  @OneToMany(() => Rider, (rider) => rider.partner)
+  @OneToMany(() => Rider, (rider) => rider.partner, { eager: true })
   riders: Rider[];
 
   @OneToMany(() => Order, (order) => order.partner)
