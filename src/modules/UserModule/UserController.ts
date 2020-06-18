@@ -1,6 +1,5 @@
 import { Response, NextFunction } from 'express';
 import RespUtil from '../../Utils/RespUtil';
-import User from '../../database/entity/User';
 import { getUserRepository } from '../../database/repository';
 import { HttpStatus } from '../../types/enums/HttpStatus';
 
@@ -12,10 +11,9 @@ export default class UserController {
     try {
       const userRepo = getUserRepository();
 
-      const user: User = await userRepo.findOneOrFail({ where: { id: user_id } });
-      user.isDisabled = true;
+      await userRepo.findOneOrFail({ where: { id: user_id } });
 
-      await userRepo.update(user_id, user);
+      await userRepo.update(user_id, { isDisabled: true });
 
       util.setSuccess(200, 'Update successful!', {});
       return util.send(res);

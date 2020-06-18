@@ -50,7 +50,7 @@ passport.use(
         const check = await user.validatePassword(password);
         if (!check) throw new CustomError(400, 'Invalid login credentials, check and try again.');
 
-        if (user?.isDisabled === true)
+        if (user.isDisabled === true)
           throw new CustomError(401, 'Account disabled or Unauthorized Access');
 
         done(null, user);

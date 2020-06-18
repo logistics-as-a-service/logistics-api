@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import config from 'config';
-
 import User from '../../database/entity/User';
 import CustomError from '../../Utils/CustomError';
 

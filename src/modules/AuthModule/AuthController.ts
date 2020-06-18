@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { pick } from 'lodash';
 import * as ip from 'ip';
+import { pick } from 'lodash';
 import config from 'config';
 import jwt from 'jsonwebtoken';
 
@@ -29,15 +29,15 @@ export default class AuthController {
     try {
       const payload = pick(req.body, ['email', 'password']);
 
-      const { error } = validateLogin().validate(payload);
+      const { error, value } = validateLogin().validate(payload);
       if (error) throw new CustomError(400, error.message);
 
-      const user = await userRepo.validateCred(payload.email, payload.password);
-      userRepo.update({ id: user.id }, { lastLoginIp: ip.address() });
+      const user = await userRepo.validateCred(value);
+      await userRepo.update({ id: user.id }, { lastLoginIp: ip.address() });
 
       const response = await AuthService.getAuthToken(user);
 
-      util.setSuccess(200, 'Login successful!', response);
+      util.setSuccess(200, 'referesh successful!', response);
       return util.send(res);
     } catch ({ statusCode, message }) {
       return util.setError(statusCode || 400, message).send(res);
