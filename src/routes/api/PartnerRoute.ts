@@ -19,12 +19,13 @@ router.put('/partner/:partner', [Auth, CanManagePartner], PartnerController.upda
 /**
  * Riders routes
  */
-// router.get('/partner/:partner/riders', RidersCtl.getPartnerRiders);
+
+router.get('/partner/:partner/riders', [Auth, CanManagePartner], RidersCtl.getRiders);
 
 router.post(
   '/partner/:partner/rider',
   [Auth, CanManagePartner, UploadFile({ validator: validateRider(), maxFiles: 1 })],
-  RidersCtl.onBoardPartnerRider
+  RidersCtl.onBoardRider
 );
 
 // router.get('/partner/:partner/rider/:rider', RidersCtl.updatePartnerRider);

@@ -7,11 +7,12 @@ import { HttpStatus } from '../../types/enums/HttpStatus';
 
 import RespUtil from '../../Utils/RespUtil';
 import RidersService from './RidersService';
+import RiderResponse from '../../types/responses/RiderResponse';
 
 const util = new RespUtil();
 
 export default class RidersController {
-  static async onBoardPartnerRider(req, res: Response, _next) {
+  static async onBoardRider(req, res: Response, _next) {
     const { validateRider } = ValidationHelper;
     const { partner } = req;
 
@@ -38,7 +39,16 @@ export default class RidersController {
     }
   }
 
-  // static async getPartnerRiders(req: Request, res: Response, _next) {}
+  static async getRiders(req, res: Response, _next) {
+    try {
+      const response = new RiderResponse(req.partner);
+
+      util.setSuccess(200, 'successful!', response);
+      return util.send(res);
+    } catch ({ statusCode, message }) {
+      return util.setError(statusCode || 400, message).send(res);
+    }
+  }
 
   // static async updatePartnerRider(req, res, next) {}
   // static async getPartnerRidersById(req, res, next) {}
