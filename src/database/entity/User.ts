@@ -82,6 +82,11 @@ export default class User extends BaseEntity {
 
   @BeforeUpdate()
   updateDatesOnUpdate() {
+    delete this.rider;
+    delete this.partner;
+    delete this.customer;
+    delete this.admin;
+
     this.updatedAt = new Date();
   }
 

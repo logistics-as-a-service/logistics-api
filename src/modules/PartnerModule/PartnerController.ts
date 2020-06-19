@@ -85,7 +85,7 @@ export default class PartnerController {
       await partnerRepo.update(partner.id, partner);
 
       // return partnerRepo.findOne(partner_id);
-      util.setSuccess(200, 'Register successful!', {});
+      util.setSuccess(200, 'Update successful!', {});
       return util.send(res);
     } catch ({ statusCode, message }) {
       return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);

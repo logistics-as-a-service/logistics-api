@@ -6,7 +6,7 @@ import { HttpStatus } from '../types/enums/HttpStatus';
 import { getPartnerRepository } from '../database/repository/index';
 
 const util = new ResUtil();
-// { [key: string]: string; }
+
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const subdomain = String(req.headers['X-Subdomain']);

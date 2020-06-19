@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import Auth from '../../middleware/AuthMiddleware';
 
-import MustBePartner from '../../middleware/PartnerMiddleware';
 import UploadFile from '../../middleware/UploadMiddleware';
+import { CanManagePartner } from '../../middleware/PermissionMiddleware';
 
 import PartnerController from '../../modules/PartnerModule/PartnerController';
 import RidersCtl from '../../modules/RidersModule/RidersController';
@@ -14,7 +14,7 @@ const router = Router();
 
 router.post('/partner', PartnerController.registerPartner);
 
-router.put('/partner/:partner_id', [Auth, MustBePartner], PartnerController.updatePartner);
+router.put('/partner/:partner', [Auth, CanManagePartner], PartnerController.updatePartner);
 
 /**
  * Riders routes
@@ -23,7 +23,7 @@ router.put('/partner/:partner_id', [Auth, MustBePartner], PartnerController.upda
 
 router.post(
   '/partner/:partner/rider',
-  [Auth, MustBePartner, UploadFile({ validator: validateRider(), maxFiles: 1 })],
+  [Auth, CanManagePartner, UploadFile({ validator: validateRider(), maxFiles: 1 })],
   RidersCtl.onBoardPartnerRider
 );
 

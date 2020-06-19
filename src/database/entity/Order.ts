@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, Column, JoinColumn, BeforeInsert, ManyToOne, OneToOne } from 'typeorm';
+import { Entity, BaseEntity, Column, JoinColumn, BeforeInsert, ManyToOne } from 'typeorm';
 import { EItemType } from '../../types/enums/EItemType';
 
 import State from './State';
@@ -34,9 +34,9 @@ export default class Order extends BaseEntity {
   @Column({ name: 'delivery_address', nullable: true })
   deliveryAddress: string;
 
-  @OneToOne(() => State)
+  @ManyToOne(() => State)
   @JoinColumn({ name: 'delivery_state_id' })
-  deliveryStateId: State;
+  deliveryState: State;
 
   @Column({ name: 'delivery_instruction', type: 'text' })
   deliveryInstruction: string;

@@ -15,7 +15,7 @@ export default class UserController {
 
       await userRepo.update(user_id, { isDisabled: true });
 
-      util.setSuccess(200, 'Update successful!', {});
+      util.setSuccess(200, 'User disabled successful!', {});
       return util.send(res);
     } catch ({ statusCode, message }) {
       return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);

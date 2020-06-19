@@ -1,11 +1,9 @@
 import { Response, NextFunction } from 'express';
 import { pick } from 'lodash';
 
-import { EUserType } from '../../types/enums/EUserType';
 import CustomError from '../../Utils/CustomError';
 import RespUtil from '../../Utils/RespUtil';
 import ValidationHelper from '../../Utils/ValidationHelper';
-import User from '../../database/entity/User';
 import { getAdminRepository } from '../../database/repository/index';
 
 const util = new RespUtil();
@@ -15,7 +13,6 @@ export default class AdminController {
    *  Rest API to add other admin
    */
   static async addAdmin(req, res: Response, _next: NextFunction) {
-    const authUser: User = req.user;
     const [{ validateUser }, { createOrFail }] = [ValidationHelper, getAdminRepository()];
 
     try {
@@ -27,8 +24,6 @@ export default class AdminController {
         'confirm_password',
         'mobile_no',
       ]);
-
-      if (authUser.userType !== EUserType.ADMIN) throw new CustomError(401, 'Unauthorized access');
 
       const { error } = validateUser().validate(payload);
       if (error) throw new CustomError(400, error.message);

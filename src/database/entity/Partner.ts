@@ -77,11 +77,11 @@ export default class Partner extends BaseEntity {
   @Column({ name: 'subscription_expire_date' })
   subscriptionExpireDate: Date;
 
-  @OneToOne(() => State)
+  @ManyToOne(() => State)
   @JoinColumn({ name: 'state_id' })
   state: State;
 
-  @OneToOne(() => City)
+  @ManyToOne(() => City)
   @JoinColumn({ name: 'city_id' })
   city: City;
 
@@ -90,7 +90,7 @@ export default class Partner extends BaseEntity {
   })
   contacts: PartnerContact[];
 
-  @OneToMany(() => Rider, (rider) => rider.partner, { eager: true })
+  @OneToMany(() => Rider, (rider) => rider.partner)
   riders: Rider[];
 
   @OneToMany(() => Order, (order) => order.partner)

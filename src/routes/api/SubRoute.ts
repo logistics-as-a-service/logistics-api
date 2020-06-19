@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import Auth from '../../middleware/AuthMiddleware';
-import MustBeAdmin from '../../middleware/AdminMiddleware';
-
 import SubscriptionCtl from '../../modules/SubModule/SubController';
+
+import { MustBeAdmin } from '../../middleware/PermissionMiddleware';
 
 const router = Router();
 
