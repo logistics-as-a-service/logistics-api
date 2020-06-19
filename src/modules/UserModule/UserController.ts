@@ -11,11 +11,14 @@ export default class UserController {
     try {
       const userRepo = getUserRepository();
 
-      await userRepo.findOneOrFail({ where: { id: user_id } });
+      const user = await userRepo.findOneOrFail({ where: { id: user_id } });
+      const userStatus = user.isDisabled
+        ? { message: 'enabled', status: false }
+        : { message: 'disabled', status: true };
 
-      await userRepo.update(user_id, { isDisabled: true });
+      await userRepo.update(user_id, { isDisabled: userStatus.status });
 
-      util.setSuccess(200, 'User disabled successful!', {});
+      util.setSuccess(200, `User ${userStatus.message} successful!`, {});
       return util.send(res);
     } catch ({ statusCode, message }) {
       return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);
