@@ -84,7 +84,7 @@ export const MustBeAdmin = async (req, res: Response, next: NextFunction) => {
  */
 export const CanManagePartner = async (req, res: Response, next: NextFunction) => {
   const approvedUsers = [EUserType.PARTNER, EUserType.ADMIN];
-  const { partner: partnerId } = req.params;
+  const { partner_id: partnerId } = req.params;
   const user = req.user;
 
   try {

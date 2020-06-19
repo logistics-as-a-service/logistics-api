@@ -9,6 +9,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import config from 'config';
 import { LogisticsEmitter, EventType } from './Utils/Emittery';
+import { HttpStatus } from './types/enums/HttpStatus';
 import './database/DbConnection';
 
 import routes from './routes';
@@ -70,11 +71,7 @@ class App {
     if (!isProduction) {
       this.app.use((err, _req: Request, res: Response, _next: NextFunction) => {
         log(err.stack);
-        res.status(err.status || 500).json({
-          // error: {
-          //   message: err.message,
-          //   error: err,
-          // },
+        res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR).json({
           message: err.message,
           status: false,
         });
@@ -82,11 +79,8 @@ class App {
     }
 
     this.app.use((err, _req: Request, res: Response, _next: NextFunction) => {
-      return res.status(err.status || 500).json({
-        error: {
-          message: err.message,
-          error: {},
-        },
+      return res.status(err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: err.message,
         status: false,
       });
     });

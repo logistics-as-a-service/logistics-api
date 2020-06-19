@@ -1,35 +1,35 @@
 import { Router } from 'express';
 import Auth from '../../middleware/AuthMiddleware';
-
-import UploadFile from '../../middleware/UploadMiddleware';
-import { CanManagePartner } from '../../middleware/PermissionMiddleware';
+import { uploadFile } from '../../Utils/FileUploader';
 
 import PartnerController from '../../modules/PartnerModule/PartnerController';
 import RidersCtl from '../../modules/RidersModule/RidersController';
 
-import ValidationHelper from '../../Utils/ValidationHelper';
-const { validateRider } = ValidationHelper;
+import { CanManagePartner } from '../../middleware/PermissionMiddleware';
 
 const router = Router();
 
 router.post('/partner', PartnerController.registerPartner);
 
-router.put('/partner/:partner', [Auth, CanManagePartner], PartnerController.updatePartner);
+router.put('/partner/:partner_id', [Auth, CanManagePartner], PartnerController.updatePartner);
 
 /**
  * Riders routes
  */
-
-router.get('/partner/:partner/riders', [Auth, CanManagePartner], RidersCtl.getRiders);
+router.get('/partner/:partner_id/riders', [Auth, CanManagePartner], RidersCtl.getRiders);
 
 router.post(
-  '/partner/:partner/rider',
-  [Auth, CanManagePartner, UploadFile({ validator: validateRider(), maxFiles: 1 })],
+  '/partner/:partner_id/rider',
+  [Auth, CanManagePartner, uploadFile.single('profile_image')],
   RidersCtl.onBoardRider
 );
 
-// router.get('/partner/:partner/rider/:rider', RidersCtl.updatePartnerRider);
+router.get(
+  '/partner/:partner_id/rider/:rider_id',
+  [Auth, CanManagePartner],
+  RidersCtl.getRidersById
+);
 
-// router.put('/partner/:partner/rider/:rider', RidersCtl.getPartnerRidersById);
+// router.put('/partner/:partner_id/rider/:rider_id', [Auth, CanManagePartner], RidersCtl.uploadRider);
 
 export default router;

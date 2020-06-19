@@ -19,6 +19,7 @@ export default {
     baseUrl: process.env.LOGISTICS_BASE_URL,
     fontendUrl: process.env.LOGISTICS_FONTEND_URL,
     port: process.env.LOGISTICS_SERVER_PORT || 3000,
+    maxUploadFileSize: process.env.LOGISTICS_MAX_UPLOAD_SIZE || 10 * 1024 * 1024, // 100MB,
   },
   redis: {
     host: redisUrl.hostname || 'localhost',
@@ -52,7 +53,6 @@ export default {
     sender_email: process.env.LOGISTICS_SENDER_MAIL,
   },
   s3: {
-    maxUploadFileSize: process.env.LOGISTICS_MAX_UPLOAD_SIZE || 1 * 1024 * 1024, // 100MB,
     secret: process.env.LOGISTICS_AWS_SECRET,
     key: process.env.LOGISTICS_AWS_KEY,
     region: process.env.LOGISTICS_AWS_REGION,

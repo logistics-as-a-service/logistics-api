@@ -1,4 +1,5 @@
-import Joi from '@hapi/joi';
+import Joi, { CustomHelpers } from '@hapi/joi';
+import { validate as validateEmail } from 'email-validator';
 
 /**
  * Joi helper class for validation
@@ -235,11 +236,23 @@ export default class ValidationHelper {
   }
 
   static validateRider() {
+    const method = (email: any, helpers: CustomHelpers) => {
+      const isValid: boolean = validateEmail(email);
+      if (!isValid) return helpers.message({ custom: `${email}: invalid email address` });
+
+      // const user = await User.findOne({ email });
+      // if (user) return helpers.message({ custom: `${email} record exist!` });
+
+      return email;
+    };
+
     return Joi.object().keys({
       email: Joi.string()
-        .email({ minDomainSegments: 2 })
+        .custom(method, 'email validation')
         .required()
-        .error(new Error('Email address is required!')),
+        .error((errors) => {
+          return new Error(errors.map((err) => err).join(' and '));
+        }),
       password: Joi.string()
         .regex(/^[a-zA-Z0-9!@#$%&*]{3,25}$/)
         .required()

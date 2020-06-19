@@ -1,22 +1,28 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
+import camelCase from 'camelcase-keys';
 import { pick } from 'lodash';
 
 import ValidationHelper from '../../Utils/ValidationHelper';
-import CustomError from '../../Utils/CustomError';
-import { HttpStatus } from '../../types/enums/HttpStatus';
 
 import RespUtil from '../../Utils/RespUtil';
 import RidersService from './RidersService';
 import RiderResponse from '../../types/responses/RiderResponse';
+import { streamFileToS3 } from '../../Utils/FileUploader';
+import User from '../../database/entity/User';
+import PartnerResponse from '../../types/responses/PartnerResponse';
+import CustomError from '../../Utils/CustomError';
+import { HttpStatus } from '../../types/enums/HttpStatus';
 
 const util = new RespUtil();
 
 export default class RidersController {
   static async onBoardRider(req, res: Response, _next) {
     const { validateRider } = ValidationHelper;
-    const { partner } = req;
+    const { partner, file } = req;
 
     try {
+      if (!file) throw new Error('Upload Riders profile image is required');
+
       const payload = pick(req.body, [
         'email',
         'password',
@@ -24,15 +30,20 @@ export default class RidersController {
         'mobile_no',
         'first_name',
         'last_name',
-        'profile_image',
       ]);
 
-      const { error, value } = validateRider().validate(payload);
-      if (error) throw new CustomError(HttpStatus.BAD_REQUEST, error.message);
+      const data = await validateRider().validateAsync(payload);
 
-      const response = await RidersService.onBoardRiders(value, partner);
+      const check = await User.findOne({ email: payload.email });
+      if (check) throw new Error(`Rider with email: ${check.email}, record exist!`);
 
-      util.setSuccess(200, 'Rider added successful!', response);
+      // everything is clean, you can upload image
+      const uploadedFile: any = await streamFileToS3(file.buffer, file.originalname);
+      Object.assign(data, { ...camelCase(data), profileImage: uploadedFile.Location });
+
+      const response = await RidersService.onBoardRiders(data, partner);
+
+      util.setSuccess(200, 'Rider added successful!', new RiderResponse(response));
       return util.send(res);
     } catch ({ statusCode, message }) {
       return util.setError(statusCode || 400, message).send(res);
@@ -41,7 +52,7 @@ export default class RidersController {
 
   static async getRiders(req, res: Response, _next) {
     try {
-      const response = new RiderResponse(req.partner);
+      const response = new PartnerResponse(req.partner);
 
       util.setSuccess(200, 'successful!', response);
       return util.send(res);
@@ -50,6 +61,22 @@ export default class RidersController {
     }
   }
 
-  // static async updatePartnerRider(req, res, next) {}
-  // static async getPartnerRidersById(req, res, next) {}
+  static async getRidersById(req, res: Response, _next: NextFunction) {
+    const { rider_id } = req.params;
+    const { partner } = req;
+
+    try {
+      const check = partner.riders.filter((rider) => rider.id === rider_id)[0];
+      if (!check) throw new CustomError(HttpStatus.NOT_FOUND, 'Rider not found!');
+
+      const rider = await RidersService.findById(rider_id);
+
+      util.setSuccess(200, 'successful!', new RiderResponse(rider));
+      return util.send(res);
+    } catch ({ statusCode, message }) {
+      return util.setError(statusCode || 400, message).send(res);
+    }
+  }
+
+  // static async uploadRider(_req: Request, _res, _next) {}
 }

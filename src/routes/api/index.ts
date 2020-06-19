@@ -11,9 +11,9 @@ const routes = Router();
 
 routes.use('/', AuthRoute);
 routes.use('/', AdminRoute);
-routes.use('/', PartnerRoute);
 routes.use('/', StateRoute);
 routes.use('/', SubRoute);
 routes.use('/', UserRoute);
+routes.use('/', PartnerRoute);
 
 export default routes;

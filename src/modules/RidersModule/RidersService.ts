@@ -17,13 +17,17 @@ export default class RidersService {
       const rider = new Rider();
       const user: Partial<User> = { email, password, mobileNo, userType: EUserType.RIDER };
 
-      Object.assign(rider, { ...data, partner, user });
+      Object.assign(rider, { ...data, partner: partner.id, user });
 
       const createRider = riderRepo.create(rider);
       return riderRepo.save(createRider);
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+
+  static async findById(riderId): Promise<Rider> {
+    return getRepository(Rider).findOneOrFail(riderId, { relations: ['user'] });
   }
 
   // Update riders information

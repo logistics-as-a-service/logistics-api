@@ -1,10 +1,18 @@
-import { Entity, BaseEntity, Column, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import User from './User';
 import Partner from './Partner';
 
 @Entity({ name: 'riders' })
 export default class Rider extends BaseEntity {
-  @Column({ generated: 'increment', primary: true, type: 'integer' })
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @OneToOne(() => User, { cascade: true })
