@@ -9,7 +9,11 @@ const router = Router();
 
 router.get('/subscriptions', SubscriptionCtl.getSubscriptions);
 
-router.put('/subscription/:subscription', [Auth, MustBeAdmin], SubscriptionCtl.updateSubscription);
+router.put(
+  '/subscription/:subscription_id',
+  [Auth, MustBeAdmin],
+  SubscriptionCtl.updateSubscription
+);
 
 router.post('/subscription', [Auth, MustBeAdmin], SubscriptionCtl.createSub);
 

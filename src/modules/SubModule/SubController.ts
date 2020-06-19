@@ -62,11 +62,11 @@ export default class SubController {
    * Update Subscription
    */
   static async updateSubscription(req: Request, res: Response, _next) {
-    const { subscription } = req.params;
+    const { subscription_id } = req.params;
     const { validateSubUpdate } = ValidationHelper;
 
     try {
-      const sub = await SubService.getSubscription(subscription);
+      const sub = await SubService.getSubscription(subscription_id);
 
       const payload = pick(req.body, [
         'name',
