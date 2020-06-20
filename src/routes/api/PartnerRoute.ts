@@ -30,6 +30,6 @@ router.get(
   RidersCtl.getRidersById
 );
 
-// router.put('/partner/:partner_id/rider/:rider_id', [Auth, CanManagePartner], RidersCtl.uploadRider);
+router.put('/partner/:partner_id/rider/:rider_id', [Auth, CanManagePartner], RidersCtl.uploadRider);
 
 export default router;

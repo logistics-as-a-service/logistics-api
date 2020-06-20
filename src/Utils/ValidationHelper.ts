@@ -240,9 +240,6 @@ export default class ValidationHelper {
       const isValid: boolean = validateEmail(email);
       if (!isValid) return helpers.message({ custom: `${email}: invalid email address` });
 
-      // const user = await User.findOne({ email });
-      // if (user) return helpers.message({ custom: `${email} record exist!` });
-
       return email;
     };
 
@@ -275,9 +272,24 @@ export default class ValidationHelper {
         .max(11)
         .required()
         .error(new Error('Phone number is required and must be at 11')),
-      // profile_image: Joi.string()
-      //   .required()
-      //   .error(new Error('Please upload profile image is required!')),
+    });
+  }
+
+  static validateUpdateRider() {
+    return Joi.object().keys({
+      first_name: Joi.string()
+        .min(3)
+        .required()
+        .error(new Error('First name must be at least 3 characters long')),
+      last_name: Joi.string()
+        .min(3)
+        .max(100)
+        .error(new Error('Last name must be at least 3 characters long')),
+      mobile_no: Joi.string()
+        .max(11)
+        .error(new Error('Phone number is required and must be at 11')),
+      is_engaged: Joi.boolean().error(new Error('Is rider engage? field required!')),
+      is_retired: Joi.boolean().error(new Error('Retired or disable rider? field required!')),
     });
   }
 }

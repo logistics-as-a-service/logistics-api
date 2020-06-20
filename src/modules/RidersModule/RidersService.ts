@@ -1,10 +1,10 @@
 import camelCase from 'camelcase-keys';
+import { getRepository } from 'typeorm';
 
 import Rider from '../../database/entity/Riders';
 import User from '../../database/entity/User';
 import { EUserType } from '../../types/enums/EUserType';
 import Partner from '../../database/entity/Partner';
-import { getRepository } from 'typeorm';
 
 export default class RidersService {
   // OnBoard riders
@@ -26,8 +26,23 @@ export default class RidersService {
     }
   }
 
-  static async findById(riderId): Promise<Rider> {
+  static async findById(riderId: string): Promise<Rider> {
     return getRepository(Rider).findOneOrFail(riderId, { relations: ['user'] });
+  }
+
+  static async updateRider(riderId: any, payload) {
+    const riderRepo = getRepository(Rider);
+
+    try {
+      const rider = await riderRepo.findOneOrFail(riderId);
+      // TODO: fix one-to-many update issues
+      const { mobileNo, ...data } = camelCase(payload);
+      Object.assign(rider, { ...data });
+
+      await riderRepo.update(riderId, rider);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   // Update riders information

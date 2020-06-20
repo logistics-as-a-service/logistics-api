@@ -78,5 +78,30 @@ export default class RidersController {
     }
   }
 
-  // static async uploadRider(_req: Request, _res, _next) {}
+  static async uploadRider(req, res: Response, _next: NextFunction) {
+    const { validateUpdateRider } = ValidationHelper;
+    const { rider_id } = req.params;
+    const { partner } = req;
+
+    try {
+      const check = partner.riders.filter((rider) => rider.id === rider_id)[0];
+      if (!check) throw new CustomError(HttpStatus.NOT_FOUND, 'Rider not found!');
+
+      const payload = pick(req.body, [
+        'first_name',
+        'last_name',
+        'mobile_no',
+        'is_engaged',
+        'is_retired',
+      ]);
+      const data = await validateUpdateRider().validateAsync(payload);
+
+      await RidersService.updateRider(rider_id, data);
+
+      util.setSuccess(200, 'Update successful!', {});
+      return util.send(res);
+    } catch ({ statusCode, message }) {
+      return util.setError(statusCode || 400, message).send(res);
+    }
+  }
 }

@@ -11,7 +11,7 @@ export default class Utility {
    * Method to format phone number
    * @param {string} phone
    */
-  static formatPhoneNumber(phone: string) {
+  static formatPhoneNumber(phone: string): string {
     // check if number is equal to 11
     if (phone.length !== 11) {
       throw new CustomError(400, 'Incorrect phone number, check and try again!');
