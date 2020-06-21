@@ -10,6 +10,8 @@ const refreshExp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // 7 days
 
 const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST || '127.0.0.1';
 const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT || '6379';
+const REDIS_PASSWORD = process.env.LOGISITICS_REDIS_PASSWORD;
+const REDIS_DATABASE_NAME = process.env.LOGISTICS_REDIS_DATABASE_NAME;
 
 const redisUrl = new URL(process.env.LOGISTICS_REDIS_URL || `redis://${REDIS_HOST}:${REDIS_PORT}/`);
 
@@ -24,8 +26,8 @@ export default {
   redis: {
     host: redisUrl.hostname || 'localhost',
     port: parseInt(redisUrl.port || '6379', 10),
-    db: parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
-    password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
+    db: REDIS_DATABASE_NAME ? REDIS_DATABASE_NAME : parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
+    password: REDIS_PASSWORD ? REDIS_PASSWORD : redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
     prefix: 'logistics:',
   },
   auth: {
