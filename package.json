@@ -16,7 +16,7 @@
     "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
     "build-ts": "tsc",
-    "postinstall": "npm run build-ts"
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
