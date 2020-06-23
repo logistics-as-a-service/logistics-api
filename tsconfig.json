@@ -65,6 +65,6 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src", "states-and-cities.json"],
   "exclude": ["node_modules"]
 }

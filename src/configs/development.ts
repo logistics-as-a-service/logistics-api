@@ -8,21 +8,24 @@ const resetPasswordExp = Math.floor(Date.now() / 1000) + 60 * 60 * 1; // 1hours
 const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // 24hours
 const refreshExp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // 7 days
 
-const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST || '127.0.0.1';
-const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT || '6379';
+const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST;
+const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT;
+const REDIS_PASSWORD = process.env.LOGISITICS_REDIS_PASSWORD;
 
-const redisUrl = new URL(process.env.LOGISTICS_REDIS_URL || `redis://${REDIS_HOST}:${REDIS_PORT}/`);
+const redisUrl = new URL(
+  process.env.LOGISTICS_REDIS_URL || `redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}/0`
+);
 
-export default {
+module.exports = {
   general: {
     env: 'development',
     baseUrl: process.env.LOGISTICS_BASE_URL,
     fontendUrl: process.env.LOGISTICS_FONTEND_URL,
-    port: process.env.LOGISTICS_SERVER_PORT || 3000,
+    port: process.env.PORT || 3000,
     maxUploadFileSize: process.env.LOGISTICS_MAX_UPLOAD_SIZE || 10 * 1024 * 1024, // 100MB,
   },
   redis: {
-    host: redisUrl.hostname || 'localhost',
+    host: redisUrl.hostname,
     port: parseInt(redisUrl.port || '6379', 10),
     db: parseInt((redisUrl.pathname || '/0').substr(1) || '0', 10),
     password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,

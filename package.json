@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "description": "Logistics as a service",
   "main": "server.js",
+  "engines": {
+    "node": "10.12.0"
+  },
   "scripts": {
     "start": "cross-env NODE_CONFIG_DIR=./src/configs npm run build && node build/server.js",
     "start:dev": "cross-env NODE_CONFIG_DIR=./src/configs nodemon",
-    "start:dev:worker": "cross-env NODE_CONFIG_DIR=./src/configs NODE_ENV=development ts-node ./src/email.worker.ts",
+    "start:dev:worker": "node ./build/src/email.worker.js",
+    "start:local:worker": "cross-env NODE_CONFIG_DIR=./src/configs NODE_ENV=development ts-node ./src/email.worker.ts",
     "build": "rimraf ./build && tsc",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n",
-    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
+    "migrate:create": "ts-node ./node_modules/typeorm/cli.js -f ./src/configs/ormconfig.ts migration:create -n",
+    "migrate:up": "ts-node ./node_modules/typeorm/cli.js -f ./src/configs/ormconfig.ts migration:run",
+    "migrate:down": "ts-node ./node_modules/typeorm/cli.js -f ./src/configs/ormconfig.ts migration:revert",
+    "build-ts": "tsc",
+    "postinstall": "npm run build-ts"
   },
   "repository": {
     "type": "git",
