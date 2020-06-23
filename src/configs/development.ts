@@ -11,6 +11,7 @@ const refreshExp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // 7 days
 const REDIS_HOST = process.env.LOGISTICS_REDIS_HOST;
 const REDIS_PORT = process.env.LOGISTICS_REDIS_PORT;
 const REDIS_PASSWORD = process.env.LOGISITICS_REDIS_PASSWORD;
+// const REDIS_DATABASE_NAME = process.env.LOGISTICS_REDIS_DATABASE_NAME;
 
 const redisUrl = new URL(
   process.env.LOGISTICS_REDIS_URL || `redis://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}/0`
