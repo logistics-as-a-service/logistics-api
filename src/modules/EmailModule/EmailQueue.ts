@@ -9,14 +9,14 @@ const client = new Redis(redisConfig);
 const subscriber = new Redis(redisConfig);
 
 const opts = {
-  createClient: type => {
+  createClient: (type) => {
     switch (type) {
       case 'client':
         return client;
       case 'subscriber':
         return subscriber;
       default:
-        return new Redis(redisConfig);
+        return new Redis(redisConfig); // `redis://:${password}@${host}:${port}/0`
     }
   },
 };
