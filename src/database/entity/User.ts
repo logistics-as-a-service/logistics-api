@@ -15,6 +15,7 @@ import Rider from './Riders';
 import Partner from './Partner';
 import Customer from './Customer';
 import Admin from './Admin';
+import { uuid } from '../../Utils/uuid';
 
 @Entity({ name: 'users' })
 export default class User extends BaseEntity {
@@ -45,6 +46,9 @@ export default class User extends BaseEntity {
   @Column({ name: 'reset_token', nullable: true })
   resetToken: string;
 
+  @Column({ name: 'verification_token', nullable: true })
+  verificationToken: string;
+
   @Column({ name: 'reset_expires', type: 'integer', nullable: true })
   resetExpires: number;
 
@@ -72,6 +76,7 @@ export default class User extends BaseEntity {
   @BeforeInsert()
   updateDatesOnInsert() {
     this.lastLoginIp = ip.address();
+    this.verificationToken = uuid();
 
     this.lastLoginDate = new Date();
     this.createdAt = new Date();

@@ -1,6 +1,9 @@
+import * as path from 'path';
 import config from 'config';
 
 const { type, host, port, username, password, name } = config.get('database');
+
+const srcPath = (...segments: string[]) => path.join(__dirname, '../database', ...segments);
 
 const conneection = {
   name: 'default',
@@ -10,14 +13,16 @@ const conneection = {
   username,
   password,
   database: name,
-  entities: [`src/database/entity/*.ts`],
-  migrations: [`src/database/migration/*.ts`],
-  subscribers: ['src/database/subscriber/*.ts'],
+  entities: [srcPath('entity', '*{.ts,.js}')],
+  migrations: [srcPath('migration', '*{.ts,.js}')],
+  subscribers: [srcPath('subscriber', '*{.ts,.js}')],
   synchronize: true,
+  migrationsTableName: '_migrations',
   // logging: true,
   cli: {
-    migrationsDir: `src/database/migration`
-  }
+    migrationsDir: srcPath('migration'),
+  },
+  keepConnectionAlive: true,
 };
 
 if (module) {

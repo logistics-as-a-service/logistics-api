@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import User from './User';
 import Partner from './Partner';
+import { IMailer } from '../../types/interfaces/IMailer';
+import { LogisticsEmitter, EventType } from '../../Utils/Emittery';
 
 @Entity({ name: 'riders' })
 export default class Rider extends BaseEntity {
@@ -37,4 +39,21 @@ export default class Rider extends BaseEntity {
 
   @Column({ name: 'is_retired', type: 'boolean', default: false })
   isRetired: boolean;
+
+  sendVerificationMail() {
+    const payload: Partial<IMailer> = {
+      to: [{ name: this.lastName, email: this.user.email }],
+      subject: 'Verified your email',
+      templateId: 'signup',
+      isMultiple: false,
+      templateData: {
+        type: 'Rider',
+        name: this.lastName,
+        verificationLink: this.user.verificationToken,
+        partner: this.partner.companyName,
+      },
+    };
+
+    LogisticsEmitter.emit({ type: EventType.SendWelcomeEmail, payload });
+  }
 }

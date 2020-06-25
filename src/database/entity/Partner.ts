@@ -18,6 +18,8 @@ import Rider from './Riders';
 import Order from './Order';
 import { City } from './City';
 import SubService from '../../modules/SubModule/SubService';
+import { LogisticsEmitter, EventType } from '../../Utils/Emittery';
+import { IMailer } from '../../types/interfaces/IMailer';
 
 @Entity({ name: 'partners' })
 export default class Partner extends BaseEntity {
@@ -144,5 +146,21 @@ export default class Partner extends BaseEntity {
 
   isOwnBy(user: User) {
     return this.user.id === user.id;
+  }
+
+  sendVerificationMail() {
+    const payload: Partial<IMailer> = {
+      to: [{ name: this.fullName, email: this.user.email }],
+      subject: 'Verified your email',
+      templateId: 'signup',
+      isMultiple: false,
+      templateData: {
+        type: 'Rider',
+        name: this.fullName,
+        verificationLink: this.user.verificationToken,
+      },
+    };
+
+    LogisticsEmitter.emit({ type: EventType.SendWelcomeEmail, payload });
   }
 }

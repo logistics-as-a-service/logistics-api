@@ -1,4 +1,5 @@
 import { EmailJSON, EmailData } from '@sendgrid/helpers/classes/email-address';
+import { EMailType } from '../enums/EMailType';
 
 export interface IMailer {
   to: EmailData[];
@@ -14,4 +15,5 @@ export interface IMailer {
   substitutionWrappers: string[];
   isBulkMail: boolean;
   personalizations: EmailData[]; // array of name, email
+  emailType: EMailType;
 }

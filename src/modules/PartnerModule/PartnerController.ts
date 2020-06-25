@@ -53,6 +53,7 @@ export default class PartnerController {
       const partber = partnerRepo.create(partner);
 
       const response = await partnerRepo.save(partber);
+      response.sendVerificationMail();
 
       util.setSuccess(200, 'Register successful!', response);
       return util.send(res);

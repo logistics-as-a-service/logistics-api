@@ -42,6 +42,7 @@ export default class RidersController {
       Object.assign(data, { ...camelCase(data), profileImage: uploadedFile.Location });
 
       const response = await RidersService.onBoardRiders(data, partner);
+      response.sendVerificationMail();
 
       util.setSuccess(200, 'Rider added successful!', new RiderResponse(response));
       return util.send(res);

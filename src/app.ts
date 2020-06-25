@@ -13,8 +13,10 @@ import { HttpStatus } from './types/enums/HttpStatus';
 import './database/DbConnection';
 
 import routes from './routes';
+import SenderService from './modules/EmailModule/SenderService';
+import { EMailType } from './types/enums/EMailType';
 
-const { env } = config.get('general');
+const { env, mailTransport } = config.get('general');
 const isProduction = env === 'production';
 
 const requirePassport = () => require('./modules/AuthModule/PassportAuth');
@@ -91,11 +93,12 @@ class App {
   }
 
   private loadEventListeners() {
-    LogisticsEmitter.addListener(EventType.SendWelcomeEmail, async (payload) =>
-      // Send email here
-      // EmailService.send();
-      console.log(payload)
-    );
+    LogisticsEmitter.addListener(EventType.SendWelcomeEmail, async (payload) => {
+      const emailType =
+        mailTransport.toLowerCase() === 'gmail' ? EMailType.GMAIL : EMailType.SENDGRID;
+
+      SenderService.send({ ...payload, emailType });
+    });
   }
 }
 
