@@ -8,7 +8,7 @@ const { Mail } = classes;
 
 const { sender_name, sender_email } = config.get('mail');
 
-export default class EmailService {
+export default class SenderService {
   static send(data: IMailer): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -48,7 +48,10 @@ export default class EmailService {
         const mail = new Mail();
         mail.fromData(mailStruct);
 
-        const job = await EmailQueue.add(mail.toJSON(), { priority: data.priority });
+        const job = await EmailQueue.add(
+          { emailType: data.emailType, ...mail.toJSON() },
+          { priority: data.priority }
+        );
         return resolve({ job });
       } catch ({ message }) {
         return reject(new Error(message));

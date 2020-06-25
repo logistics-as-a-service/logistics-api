@@ -50,11 +50,18 @@ module.exports = {
     password: process.env.LOGISTICS_DB_PASSWORD,
     name: process.env.LOGISTICS_DB_NAME,
   },
+  smtp: {
+    user: process.env.LOGISTICS_EMAIL_USER,
+    clientId: process.env.LOGISTICS_CLIENT_ID,
+    clientSecret: process.env.LOGISTICS_CLIENT_SECRET,
+    refreshToken: process.env.LOGISTICS_USER_REFRESH_TOKEN,
+    accessToken: process.env.LOGISTICS_ACCESS_TOKEN,
+  },
   mail: {
-    api_key: process.env.LOGISTICS_SENDGRID_API_KEY,
-    api_key_id: process.env.LOGISTICS_SENDGRID_KEY_ID,
-    sender_name: process.env.LOGISTICS_SENDER_NAME,
-    sender_email: process.env.LOGISTICS_SENDER_MAIL,
+    apiKey: process.env.LOGISTICS_SENDGRID_API_KEY,
+    apiKey_id: process.env.LOGISTICS_SENDGRID_KEY_ID,
+    senderName: process.env.LOGISTICS_SENDER_NAME,
+    senderEmail: process.env.LOGISTICS_SENDER_MAIL,
   },
   s3: {
     secret: process.env.LOGISTICS_AWS_SECRET,
