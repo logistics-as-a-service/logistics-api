@@ -6,7 +6,7 @@ import EmailQueue from './EmailQueue';
 
 const { Mail } = classes;
 
-const { sender_name, sender_email } = config.get('mail');
+const { senderName, senderEmail } = config.get('mail');
 
 export default class SenderService {
   static send(data: IMailer): Promise<any> {
@@ -14,14 +14,14 @@ export default class SenderService {
       try {
         data.isBulkMail = false;
         // tslint:disable-next-line: no-unused-expression
-        data.replyTo ? data.replyTo : 'no-reply@meatify.ng';
+        data.replyTo ? data.replyTo : 'no-reply@logisticpass.ng';
 
         if (data.to.length > 1) {
           throw new Error('Bulk mail is currently disabled!');
         }
 
         if (!data.from && typeof data.from !== 'object') {
-          Object.assign(data, { from: { name: sender_name, email: sender_email } });
+          Object.assign(data, { from: { name: senderName, email: senderEmail } });
         }
 
         const mailStruct = {

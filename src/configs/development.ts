@@ -23,6 +23,7 @@ module.exports = {
     baseUrl: process.env.LOGISTICS_BASE_URL,
     fontendUrl: process.env.LOGISTICS_FONTEND_URL,
     port: process.env.PORT || 3000,
+    mailTransport: process.env.LOGISTICS_MAIL_TRANSPORT || 'gmail', // sendgrid
     maxUploadFileSize: process.env.LOGISTICS_MAX_UPLOAD_SIZE || 10 * 1024 * 1024, // 100MB,
   },
   redis: {
@@ -59,7 +60,7 @@ module.exports = {
   },
   mail: {
     apiKey: process.env.LOGISTICS_SENDGRID_API_KEY,
-    apiKey_id: process.env.LOGISTICS_SENDGRID_KEY_ID,
+    apiKeyId: process.env.LOGISTICS_SENDGRID_KEY_ID,
     senderName: process.env.LOGISTICS_SENDER_NAME,
     senderEmail: process.env.LOGISTICS_SENDER_MAIL,
   },
