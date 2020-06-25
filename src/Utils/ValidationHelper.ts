@@ -292,4 +292,18 @@ export default class ValidationHelper {
       is_retired: Joi.boolean().error(new Error('Retired or disable rider? field required!')),
     });
   }
+
+  static validateDeliverySettings() {
+    return Joi.object().keys({
+        lower_bound: Joi.number()
+            .min(0)
+            .error(new Error('Lower bound must not be lower than 0')),
+         upper_bound: Joi.number()
+             .min(1)
+             .error(new Error('Upper bound must not be lower than 1')),
+         cost: Joi.number()
+             .min(0)
+             .error(new Error('Please enter a valid financial value'))
+    });
+  }
 }

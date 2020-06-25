@@ -6,6 +6,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from 'typeorm';
 import User from './User';
 
@@ -14,7 +15,8 @@ export default class DeliverySettings extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @JoinColumn({ name: 'partner_id' })
+  @ManyToOne(_type => User)
+  @JoinColumn({name: "partner_id"})
   partner: User;
 
   @Column({ name: 'lower_bound', type: 'int' })
