@@ -113,4 +113,24 @@ export default class DeliverySettingsController {
       return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);
     }
   }
+
+  static async deleteDeliverySettings(req, res: Response, _next: NextFunction) {
+    try {
+      const { user } = req;
+
+      const deliverySettingsRepo = getDeliverySettingsRepository();
+
+      const deliverySettings = await deliverySettingsRepo.findByIdAndPartner(
+        req.params.id,
+        user.id
+      );
+
+      await deliverySettingsRepo.delete(deliverySettings);
+
+      util.setSuccess(200, 'Delivery Settings deleted successfully', null);
+      return util.send(res);
+    } catch ({ statusCode, message }) {
+      return util.setError(statusCode || HttpStatus.BAD_REQUEST, message).send(res);
+    }
+  }
 }

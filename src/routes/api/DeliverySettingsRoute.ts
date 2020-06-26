@@ -8,5 +8,6 @@ const router = Router();
 router.post('/delivery-settings', [Auth], DeliverySettingsCtrl.createNewDeliverySettings);
 router.put('/delivery-settings/:id', [Auth], DeliverySettingsCtrl.updateDeliverySettings);
 router.get('/delivery-settings', [Auth], DeliverySettingsCtrl.getDeliverySettings);
+router.delete('/delivery-settings/:id', [Auth], DeliverySettingsCtrl.deleteDeliverySettings);
 
 export default router;
